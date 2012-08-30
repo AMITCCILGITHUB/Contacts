@@ -16,6 +16,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import org.apandey.Contacts;
+
 public class StatusBar {
 
 	private Stage stage;
