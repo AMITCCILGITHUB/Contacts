@@ -1,0 +1,2 @@
+jfx.build.stagingdir = ${workspace}/Contacts/build
+jfx.build.apptitle = Contacts
