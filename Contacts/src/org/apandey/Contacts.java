@@ -45,7 +45,7 @@ public class Contacts extends Application {
 						AppSettings.getStringValue("app.stylesheet.path"))
 						.toExternalForm());
 
-		Person person = new Person();
+		Name person = new Name();
 		root.getChildren().addAll(person);
 
 		primaryStage.setScene(scene);

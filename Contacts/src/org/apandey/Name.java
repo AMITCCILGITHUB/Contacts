@@ -1,4 +1,5 @@
 package org.apandey;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,30 +12,35 @@ import javafx.scene.layout.VBox;
 
 import org.apandey.props.AppSettings;
 
-public class Person extends VBox {
-	public Person() {
+public class Name extends VBox {
+	public Name() {
 		initComponents();
 	}
 
 	private void initComponents() {
 		setVgrow(this, Priority.ALWAYS);
 
-		Label titleLabel = new Label("Title");
+		Label titleLabel = new Label(
+				AppSettings.getStringValue("title.label.text"));
 		List<String> titleList = Arrays.asList(AppSettings.getStringValue(
 				"title.combo.list").split(","));
 		ComboBox<String> titleCombo = new ComboBox<>(
 				FXCollections.observableList(titleList));
 
-		Label firstNameLabel = new Label("First Name");
+		Label firstNameLabel = new Label(
+				AppSettings.getStringValue("firstname.label.text"));
 		TextField firstNametext = new TextField();
 
-		Label middleNameLabel = new Label("Last Name");
+		Label middleNameLabel = new Label(
+				AppSettings.getStringValue("middlename.label.text"));
 		TextField middleNametext = new TextField();
 
-		Label lastNameLabel = new Label("Last Name");
+		Label lastNameLabel = new Label(
+				AppSettings.getStringValue("lastname.label.text"));
 		TextField lastNametext = new TextField();
 
-		Label suffixLabel = new Label("Title");
+		Label suffixLabel = new Label(
+				AppSettings.getStringValue("suffix.label.text"));
 		List<String> suffixList = Arrays.asList(AppSettings.getStringValue(
 				"suffix.combo.list").split(","));
 		ComboBox<String> suffixCombo = new ComboBox<>(
