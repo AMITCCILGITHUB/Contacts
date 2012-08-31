@@ -1,5 +1,8 @@
 package org.apandey.utils;
 
+import java.io.File;
+import java.net.MalformedURLException;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,8 +32,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import org.apandey.Contacts;
-
 public class MessagePopUp {
 
 	private Stage stage;
@@ -49,21 +50,21 @@ public class MessagePopUp {
 			.build();
 
 	public MessagePopUp(Stage parentStage, String title, String type,
-			String message, double width) {
+			String message, double width) throws MalformedURLException {
 		this(parentStage, title, type, message);
 		setWrapWidth(width);
 	}
 
 	public MessagePopUp(final Stage parentStage, String title, String type,
-			String message) {
+			String message) throws MalformedURLException {
 		this.root = new StackPane();
 		this.root.autosize();
 
 		this.scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT,
 				Color.web("#FFFFFF"));
+		File popupStyle = new File("resources/style/popup.css");
 		this.scene.getStylesheets().add(
-				Contacts.class.getResource("/org/map/style/popup.css")
-						.toExternalForm());
+				popupStyle.toURI().toURL().toExternalForm());
 		this.scene.setFill(Color.TRANSPARENT);
 
 		this.stage = new Stage();
@@ -136,28 +137,25 @@ public class MessagePopUp {
 		HBox messageBox = new HBox(16);
 		ImageView icon;
 		if (type.equalsIgnoreCase("Error")) {
-			icon = ImageViewBuilder
-					.create()
-					.image(new Image(Contacts.class
-							.getResourceAsStream("/org/map/images/error.png")))
+			File errorFile = new File("resources/images/error.png");
+
+			icon = ImageViewBuilder.create()
+					.image(new Image(errorFile.toURI().toURL().toString()))
 					.build();
 		} else if (type.equalsIgnoreCase("Info")) {
-			icon = ImageViewBuilder
-					.create()
-					.image(new Image(Contacts.class
-							.getResourceAsStream("/org/map/images/info.png")))
+			File infoFile = new File("resources/images/info.png");
+			icon = ImageViewBuilder.create()
+					.image(new Image(infoFile.toURI().toURL().toString()))
 					.build();
 		} else if (type.equalsIgnoreCase("Confirm")) {
-			icon = ImageViewBuilder
-					.create()
-					.image(new Image(Contacts.class
-							.getResourceAsStream("/org/map/images/confirm.png")))
+			File confirmFile = new File("resources/images/confirm.png");
+			icon = ImageViewBuilder.create()
+					.image(new Image(confirmFile.toURI().toURL().toString()))
 					.build();
 		} else {
-			icon = ImageViewBuilder
-					.create()
-					.image(new Image(Contacts.class
-							.getResourceAsStream("/org/map/images/info.png")))
+			File infoFile = new File("resources/images/info.png");
+			icon = ImageViewBuilder.create()
+					.image(new Image(infoFile.toURI().toURL().toString()))
 					.build();
 
 		}

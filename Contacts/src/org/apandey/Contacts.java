@@ -56,20 +56,20 @@ public class Contacts extends Application {
 
 		Header header = new Header();
 		Button name = new Button("Name");
+		root.getChildren().addAll(header, name);
+
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
 		final Name person = new Name(primaryStage, "Name");
 		name.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				person.show();
-
 			}
 
 		});
-		root.getChildren().addAll(header, name);
-
-		primaryStage.setScene(scene);
-		primaryStage.show();
 
 		enableDragging();
 	}

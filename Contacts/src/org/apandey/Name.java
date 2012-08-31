@@ -185,11 +185,11 @@ public class Name {
 				suffix);
 		content.getChildren().add(components);
 
-		actionBox = new HBox();
+		actionBox = new HBox(24);
 		actionBox.setAlignment(Pos.CENTER);
 		actionBox.getStyleClass().add("popUpActionBox");
 		actionBox.setPadding(new Insets(5, 0, 8, 0));
-		Button okBtn = new Button("Ok");
+		Button okBtn = new Button("Submit");
 		okBtn.getStyleClass().add("submit-button");
 		okBtn.setPrefWidth(75);
 		okBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -199,7 +199,17 @@ public class Name {
 				closePopUp();
 			}
 		});
-		actionBox.getChildren().add(okBtn);
+		Button cancelBtn = new Button("Cancel");
+		cancelBtn.getStyleClass().add("submit-button");
+		cancelBtn.setPrefWidth(75);
+		cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				closePopUp();
+			}
+		});
+		actionBox.getChildren().addAll(okBtn, cancelBtn);
 
 		vb.getChildren().addAll(header, content, actionBox);
 		rootStack.getChildren().add(vb);
