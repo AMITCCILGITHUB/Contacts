@@ -1,5 +1,8 @@
 package org.apandey.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Name {
 	private static Name name;
 
@@ -10,11 +13,11 @@ public class Name {
 	private String suffix;
 
 	private Name() {
-		title = new String();
-		firstName = new String();
-		middleName = new String();
-		lastName = new String();
-		suffix = new String();
+		title = new String("");
+		firstName = new String("");
+		middleName = new String("");
+		lastName = new String("");
+		suffix = new String("");
 	}
 
 	public static synchronized Name getInstance() {
@@ -68,5 +71,15 @@ public class Name {
 	public String toString() {
 		return getTitle() + " " + getFirstName() + " " + getMiddleName() + " "
 				+ getLastName() + " " + getSuffix();
+	}
+
+	public List<String> getNameCombinations() {
+		List<String> nameComb = new ArrayList<String>();
+		nameComb.add(getLastName() + ", " + getFirstName() + " "
+				+ getMiddleName());
+		nameComb.add(getFirstName() + " " + getMiddleName() + " "
+				+ getLastName() + " " + getSuffix());
+
+		return nameComb;
 	}
 }

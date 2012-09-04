@@ -4,3 +4,8 @@
 	
 	-fx-background-image: url("../images/bg_pattern.png");
 }
+
+.body .label{
+	-fx-text-fill: white;
+}
+

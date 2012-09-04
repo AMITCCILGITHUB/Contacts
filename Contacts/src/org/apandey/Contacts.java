@@ -17,6 +17,7 @@ import org.apandey.props.AppSettings;
 import org.apandey.view.parts.Body;
 import org.apandey.view.parts.Footer;
 import org.apandey.view.parts.Header;
+import org.apandey.view.popups.NamePopup;
 
 public class Contacts extends Application {
 	private static Contacts contacts;
@@ -59,10 +60,9 @@ public class Contacts extends Application {
 		BorderPane pane = new BorderPane();
 		Header header = new Header();
 		Footer footer = new Footer();
-		Body body = new Body();
 
 		pane.setTop(header);
-		pane.setCenter(body);
+		pane.setCenter(Body.getInstance());
 		pane.setBottom(footer);
 
 		root.getChildren().addAll(pane);

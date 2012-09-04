@@ -1,4 +1,4 @@
-package org.apandey;
+package org.apandey.view.popups;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -36,6 +36,7 @@ import javafx.stage.StageStyle;
 
 import org.apandey.data.Name;
 import org.apandey.props.AppSettings;
+import org.apandey.view.parts.Body;
 
 public class NamePopup {
 	private ComboBox<String> titleCombo;
@@ -151,7 +152,6 @@ public class NamePopup {
 
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				resetNameValues();
 				closePopUp();
 			}
 		});
@@ -187,7 +187,7 @@ public class NamePopup {
 				.getDoubleValue("name.label.width"));
 		grid.add(firstNameLabel, 0, 1);
 
-		firstNameText = new TextField();
+		firstNameText = new TextField("");
 		firstNameText.setPrefWidth(AppSettings
 				.getDoubleValue("name.input.width"));
 		grid.add(firstNameText, 1, 1);
@@ -198,7 +198,7 @@ public class NamePopup {
 				.getDoubleValue("name.label.width"));
 		grid.add(middleNameLabel, 0, 2);
 
-		middleNameText = new TextField();
+		middleNameText = new TextField("");
 		middleNameText.setPrefWidth(AppSettings
 				.getDoubleValue("name.input.width"));
 		grid.add(middleNameText, 1, 2);
@@ -209,7 +209,7 @@ public class NamePopup {
 				.getDoubleValue("name.label.width"));
 		grid.add(lastNameLabel, 0, 3);
 
-		lastNameText = new TextField();
+		lastNameText = new TextField("");
 		lastNameText.setPrefWidth(AppSettings
 				.getDoubleValue("name.input.width"));
 		grid.add(lastNameText, 1, 3);
@@ -326,10 +326,18 @@ public class NamePopup {
 	}
 
 	private void setNameValues() {
+		Name.getInstance().setTitle(
+				(titleCombo.getSelectionModel().getSelectedItem() == null ? ""
+						: titleCombo.getSelectionModel().getSelectedItem()));
 		Name.getInstance().setFirstName(firstNameText.getText());
-	}
+		Name.getInstance().setMiddleName(middleNameText.getText());
+		Name.getInstance().setLastName(lastNameText.getText());
+		Name.getInstance().setSuffix(
+				(suffixCombo.getSelectionModel().getSelectedItem() == null ? ""
+						: suffixCombo.getSelectionModel().getSelectedItem()));
 
-	private void resetNameValues() {
-		// TODO
+		Body.getInstance().setFullName(Name.getInstance().toString());
+		Body.getInstance().setPrefNames(
+				Name.getInstance().getNameCombinations());
 	}
 }
