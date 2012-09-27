@@ -1,2 +1,6 @@
 jfx.build.stagingdir = ${workspace}/Contacts/build
 jfx.build.apptitle = Contacts
+jfx.build.applicationClass = org.apandey.Contacts
+jfx.build.preloaderClass = preloader.ContactPreloader
+jfx.build.vendorname = org.map.apandey
+jfx.build.appversion = Ver1.0

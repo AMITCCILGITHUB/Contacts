@@ -31,18 +31,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import org.apandey.data.Name;
+import org.apandey.data.Phone;
 import org.apandey.props.AppSettings;
 import org.apandey.view.controls.TextBox;
 import org.apandey.view.parts.Body;
 
-public class NamePopup {
+public class PhonePopup {
 
-	private ComboBox<String> titleCombo;
-	private TextBox firstNameText;
-	private TextBox middleNameText;
-	private TextBox lastNameText;
-	private ComboBox<String> suffixCombo;
+	private ComboBox<String> countryCombo;
+	private TextBox cityCodeText;
+	private TextBox localNumberText;
+	private TextBox extensionText;
+	private String phoneType;
 
 	private Stage stage;
 	private Scene scene;
@@ -58,16 +58,16 @@ public class NamePopup {
 					.getStringValue("-fx-background-color:black; -fx-opacity:.2; -fx-background-radius: 10px;"))
 			.build();
 
-	public NamePopup(final Stage parentStage, String titleText)
-			throws MalformedURLException {
+	public PhonePopup(final Stage parentStage, String titleText,
+			String phoneType) throws MalformedURLException {
 
 		this.root = new StackPane();
 		this.root.autosize();
 
 		this.scene = new Scene(root,
-				AppSettings.getDoubleValue("name.popup.width"),
-				AppSettings.getDoubleValue("name.popup.height"),
-				Color.web(AppSettings.getStringValue("name.popup.bgcolor")));
+				AppSettings.getDoubleValue("phone.popup.width"),
+				AppSettings.getDoubleValue("phone.popup.height"),
+				Color.web(AppSettings.getStringValue("phone.popup.bgcolor")));
 		File nameStyle = new File("resources/style/name.css");
 		this.scene.getStylesheets().add(
 				nameStyle.toURI().toURL().toExternalForm());
@@ -99,10 +99,10 @@ public class NamePopup {
 		this.root.setPadding(new Insets(0, 0, 0, 0));
 		this.root.getChildren().add(mainRoot);
 
+		this.phoneType = phoneType;
+
 		VBox popupContent = new VBox();
-
 		HBox header = initHeader(titleText);
-
 		StackPane content = initContent();
 
 		initActionBox();
@@ -125,7 +125,7 @@ public class NamePopup {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 
-				setNameValues();
+				setContactNumber();
 				closePopUp();
 			}
 		});
@@ -156,64 +156,58 @@ public class NamePopup {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 10, 0, 10));
 
-		Label titleLabel = new Label(
-				AppSettings.getStringValue("title.label.text"));
-		titleLabel.setPrefWidth(AppSettings.getDoubleValue("name.label.width"));
-		grid.add(titleLabel, 0, 0);
+		Label phoneTypeLabel = new Label(phoneType);
+		phoneTypeLabel.setPrefWidth(AppSettings
+				.getDoubleValue("phone.label.width"));
+		grid.add(phoneTypeLabel, 0, 0);
 
-		List<String> titleList = Arrays.asList(AppSettings.getStringValue(
-				"title.combo.list").split(","));
-		titleCombo = new ComboBox<>(FXCollections.observableList(titleList));
-		titleCombo.setEditable(true);
-		titleCombo.setPrefWidth(AppSettings.getDoubleValue("name.input.width"));
-		grid.add(titleCombo, 1, 0);
+		Label countryLabel = new Label(
+				AppSettings.getStringValue("country.label.text"));
+		countryLabel.setPrefWidth(AppSettings
+				.getDoubleValue("phone.label.width"));
+		grid.add(countryLabel, 0, 1);
 
-		Label firstNameLabel = new Label(
-				AppSettings.getStringValue("firstname.label.text"));
-		firstNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(firstNameLabel, 0, 1);
+		List<String> countryList = Arrays.asList();
+		countryCombo = new ComboBox<>(FXCollections.observableList(countryList));
+		countryCombo.setPrefWidth(AppSettings
+				.getDoubleValue("phone.input.width"));
+		grid.add(countryCombo, 1, 1);
 
-		firstNameText = new TextBox(Name.getInstance().firstNameProperty());
-		firstNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(firstNameText, 1, 1);
+		Label cityCodeLabel = new Label(
+				AppSettings.getStringValue("citycode.label.text"));
+		cityCodeLabel.setPrefWidth(AppSettings
+				.getDoubleValue("phone.label.width"));
+		grid.add(cityCodeLabel, 0, 2);
 
-		Label middleNameLabel = new Label(
-				AppSettings.getStringValue("middlename.label.text"));
-		middleNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(middleNameLabel, 0, 2);
+		cityCodeText = new TextBox(Phone.getInstance(phoneType)
+				.cityCodeProperty());
+		cityCodeText.setPrefWidth(AppSettings
+				.getDoubleValue("phone.input.width"));
+		grid.add(cityCodeText, 1, 2);
 
-		middleNameText = new TextBox(Name.getInstance().middleNameProperty());
-		middleNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(middleNameText, 1, 2);
+		Label localNumberLabel = new Label(
+				AppSettings.getStringValue("localnumber.label.text"));
+		localNumberLabel.setPrefWidth(AppSettings
+				.getDoubleValue("phone.label.width"));
+		grid.add(localNumberLabel, 0, 3);
 
-		Label lastNameLabel = new Label(
-				AppSettings.getStringValue("lastname.label.text"));
-		lastNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(lastNameLabel, 0, 3);
+		localNumberText = new TextBox(Phone.getInstance(phoneType)
+				.localNumberProperty());
+		localNumberText.setPrefWidth(AppSettings
+				.getDoubleValue("phone.input.width"));
+		grid.add(localNumberText, 1, 3);
 
-		lastNameText = new TextBox(Name.getInstance().lastNameProperty());
-		lastNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(lastNameText, 1, 3);
+		Label extensionLabel = new Label(
+				AppSettings.getStringValue("extension.label.text"));
+		extensionLabel.setPrefWidth(AppSettings
+				.getDoubleValue("phone.label.width"));
+		grid.add(extensionLabel, 0, 4);
 
-		Label suffixLabel = new Label(
-				AppSettings.getStringValue("suffix.label.text"));
-		suffixLabel
-				.setPrefWidth(AppSettings.getDoubleValue("name.label.width"));
-		grid.add(suffixLabel, 0, 4);
-
-		List<String> suffixList = Arrays.asList(AppSettings.getStringValue(
-				"suffix.combo.list").split(","));
-		suffixCombo = new ComboBox<>(FXCollections.observableList(suffixList));
-		suffixCombo.setEditable(true);
-		suffixCombo
-				.setPrefWidth(AppSettings.getDoubleValue("name.input.width"));
-		grid.add(suffixCombo, 1, 4);
+		extensionText = new TextBox(Phone.getInstance(phoneType)
+				.extensionProperty());
+		extensionText.setPrefWidth(AppSettings
+				.getDoubleValue("phone.input.width"));
+		grid.add(extensionText, 1, 4);
 
 		content.getChildren().add(grid);
 		return content;
@@ -326,27 +320,14 @@ public class NamePopup {
 		stage.show();
 	}
 
-	private void setNameValues() {
+	private void setContactNumber() {
 
-		Name.getInstance().setTitle(
-				(titleCombo.getSelectionModel().getSelectedItem() == null ? ""
-						: titleCombo.getSelectionModel().getSelectedItem()));
-		Name.getInstance().setFirstName(firstNameText.getText());
-		Name.getInstance().setMiddleName(middleNameText.getText());
-		Name.getInstance().setLastName(lastNameText.getText());
-		Name.getInstance().setSuffix(
-				(suffixCombo.getSelectionModel().getSelectedItem() == null ? ""
-						: suffixCombo.getSelectionModel().getSelectedItem()));
+		Phone.getInstance(phoneType).setCountryCode("+91");
+		Phone.getInstance(phoneType).setCityCode(cityCodeText.getText());
+		Phone.getInstance(phoneType).setLocalNumber(localNumberText.getText());
+		Phone.getInstance(phoneType).setExtension(extensionText.getText());
 
-		Body.getInstance().setFullName(Name.getInstance().toString());
-		Body.getInstance().setPrefNames(
-				Name.getInstance().getNameCombinations());
-	}
-
-	public void setNameFromTextField() {
-
-		firstNameText.setText((Name.getInstance().getFirstName()));
-		middleNameText.setText((Name.getInstance().getMiddleName()));
-		lastNameText.setText((Name.getInstance().getLastName()));
+		Body.getInstance().setPhoneNumbers(
+				Phone.getInstance(phoneType).getNumber());
 	}
 }

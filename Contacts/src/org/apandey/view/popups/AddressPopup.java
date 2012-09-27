@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -31,18 +32,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import org.apandey.data.Name;
+import org.apandey.data.Address;
 import org.apandey.props.AppSettings;
 import org.apandey.view.controls.TextBox;
 import org.apandey.view.parts.Body;
 
-public class NamePopup {
+public class AddressPopup {
 
-	private ComboBox<String> titleCombo;
-	private TextBox firstNameText;
-	private TextBox middleNameText;
-	private TextBox lastNameText;
-	private ComboBox<String> suffixCombo;
+	private TextArea streetNameText;
+	private TextBox cityNameText;
+	private TextBox stateNameText;
+	private TextBox zipCodeText;
+	private ComboBox<String> countryCombo;
+	private String addressType;
 
 	private Stage stage;
 	private Scene scene;
@@ -58,16 +60,16 @@ public class NamePopup {
 					.getStringValue("-fx-background-color:black; -fx-opacity:.2; -fx-background-radius: 10px;"))
 			.build();
 
-	public NamePopup(final Stage parentStage, String titleText)
-			throws MalformedURLException {
+	public AddressPopup(final Stage parentStage, String titleText,
+			String addressType) throws MalformedURLException {
 
 		this.root = new StackPane();
 		this.root.autosize();
 
 		this.scene = new Scene(root,
-				AppSettings.getDoubleValue("name.popup.width"),
-				AppSettings.getDoubleValue("name.popup.height"),
-				Color.web(AppSettings.getStringValue("name.popup.bgcolor")));
+				AppSettings.getDoubleValue("address.popup.width"),
+				AppSettings.getDoubleValue("address.popup.height"),
+				Color.web(AppSettings.getStringValue("address.popup.bgcolor")));
 		File nameStyle = new File("resources/style/name.css");
 		this.scene.getStylesheets().add(
 				nameStyle.toURI().toURL().toExternalForm());
@@ -99,10 +101,10 @@ public class NamePopup {
 		this.root.setPadding(new Insets(0, 0, 0, 0));
 		this.root.getChildren().add(mainRoot);
 
+		this.addressType = addressType;
+
 		VBox popupContent = new VBox();
-
 		HBox header = initHeader(titleText);
-
 		StackPane content = initContent();
 
 		initActionBox();
@@ -125,7 +127,7 @@ public class NamePopup {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 
-				setNameValues();
+				setContactNumber();
 				closePopUp();
 			}
 		});
@@ -156,64 +158,64 @@ public class NamePopup {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 10, 0, 10));
 
-		Label titleLabel = new Label(
-				AppSettings.getStringValue("title.label.text"));
-		titleLabel.setPrefWidth(AppSettings.getDoubleValue("name.label.width"));
-		grid.add(titleLabel, 0, 0);
+		Label streetLabel = new Label(
+				AppSettings.getStringValue("street.label.text"));
+		streetLabel.setPrefWidth(AppSettings
+				.getDoubleValue("address.label.width"));
+		grid.add(streetLabel, 0, 0);
 
-		List<String> titleList = Arrays.asList(AppSettings.getStringValue(
-				"title.combo.list").split(","));
-		titleCombo = new ComboBox<>(FXCollections.observableList(titleList));
-		titleCombo.setEditable(true);
-		titleCombo.setPrefWidth(AppSettings.getDoubleValue("name.input.width"));
-		grid.add(titleCombo, 1, 0);
+		streetNameText = new TextArea("");
+		streetNameText.setPrefWidth(AppSettings
+				.getDoubleValue("address.input.width"));
+		streetNameText.setPrefHeight(AppSettings
+				.getDoubleValue("address.input.height"));
+		grid.add(streetNameText, 1, 0);
 
-		Label firstNameLabel = new Label(
-				AppSettings.getStringValue("firstname.label.text"));
-		firstNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(firstNameLabel, 0, 1);
+		Label cityLabel = new Label(
+				AppSettings.getStringValue("city.label.text"));
+		cityLabel.setPrefWidth(AppSettings
+				.getDoubleValue("address.label.width"));
+		grid.add(cityLabel, 0, 1);
 
-		firstNameText = new TextBox(Name.getInstance().firstNameProperty());
-		firstNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(firstNameText, 1, 1);
+		cityNameText = new TextBox(Address.getInstance(addressType)
+				.cityNameProperty());
+		cityNameText.setPrefWidth(AppSettings
+				.getDoubleValue("address.input.width"));
+		grid.add(cityNameText, 1, 1);
 
-		Label middleNameLabel = new Label(
-				AppSettings.getStringValue("middlename.label.text"));
-		middleNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(middleNameLabel, 0, 2);
+		Label stateLabel = new Label(
+				AppSettings.getStringValue("state.label.text"));
+		stateLabel.setPrefWidth(AppSettings
+				.getDoubleValue("address.label.width"));
+		grid.add(stateLabel, 0, 2);
 
-		middleNameText = new TextBox(Name.getInstance().middleNameProperty());
-		middleNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(middleNameText, 1, 2);
+		stateNameText = new TextBox(Address.getInstance(addressType)
+				.stateNameProperty());
+		stateNameText.setPrefWidth(AppSettings
+				.getDoubleValue("address.input.width"));
+		grid.add(stateNameText, 1, 2);
 
-		Label lastNameLabel = new Label(
-				AppSettings.getStringValue("lastname.label.text"));
-		lastNameLabel.setPrefWidth(AppSettings
-				.getDoubleValue("name.label.width"));
-		grid.add(lastNameLabel, 0, 3);
+		Label zipLabel = new Label(AppSettings.getStringValue("zip.label.text"));
+		zipLabel.setPrefWidth(AppSettings.getDoubleValue("address.label.width"));
+		grid.add(zipLabel, 0, 3);
 
-		lastNameText = new TextBox(Name.getInstance().lastNameProperty());
-		lastNameText.setPrefWidth(AppSettings
-				.getDoubleValue("name.input.width"));
-		grid.add(lastNameText, 1, 3);
+		zipCodeText = new TextBox(Address.getInstance(addressType)
+				.zipCodeProperty());
+		zipCodeText.setPrefWidth(AppSettings
+				.getDoubleValue("address.input.width"));
+		grid.add(zipCodeText, 1, 3);
 
-		Label suffixLabel = new Label(
-				AppSettings.getStringValue("suffix.label.text"));
-		suffixLabel
-				.setPrefWidth(AppSettings.getDoubleValue("name.label.width"));
-		grid.add(suffixLabel, 0, 4);
+		Label countryLabel = new Label(
+				AppSettings.getStringValue("country.label.text"));
+		countryLabel.setPrefWidth(AppSettings
+				.getDoubleValue("address.label.width"));
+		grid.add(countryLabel, 0, 4);
 
-		List<String> suffixList = Arrays.asList(AppSettings.getStringValue(
-				"suffix.combo.list").split(","));
-		suffixCombo = new ComboBox<>(FXCollections.observableList(suffixList));
-		suffixCombo.setEditable(true);
-		suffixCombo
-				.setPrefWidth(AppSettings.getDoubleValue("name.input.width"));
-		grid.add(suffixCombo, 1, 4);
+		List<String> countryList = Arrays.asList();
+		countryCombo = new ComboBox<>(FXCollections.observableList(countryList));
+		countryCombo.setPrefWidth(AppSettings
+				.getDoubleValue("address.input.width"));
+		grid.add(countryCombo, 1, 4);
 
 		content.getChildren().add(grid);
 		return content;
@@ -326,27 +328,17 @@ public class NamePopup {
 		stage.show();
 	}
 
-	private void setNameValues() {
+	private void setContactNumber() {
 
-		Name.getInstance().setTitle(
-				(titleCombo.getSelectionModel().getSelectedItem() == null ? ""
-						: titleCombo.getSelectionModel().getSelectedItem()));
-		Name.getInstance().setFirstName(firstNameText.getText());
-		Name.getInstance().setMiddleName(middleNameText.getText());
-		Name.getInstance().setLastName(lastNameText.getText());
-		Name.getInstance().setSuffix(
-				(suffixCombo.getSelectionModel().getSelectedItem() == null ? ""
-						: suffixCombo.getSelectionModel().getSelectedItem()));
+		Address.getInstance(addressType)
+				.setStreetName(streetNameText.getText());
+		Address.getInstance(addressType).setCityName(cityNameText.getText());
+		Address.getInstance(addressType).setStateName(stateNameText.getText());
+		Address.getInstance(addressType).setZipCode(zipCodeText.getText());
+		Address.getInstance(addressType).setCountry(
+				countryCombo.getSelectionModel().getSelectedItem());
 
-		Body.getInstance().setFullName(Name.getInstance().toString());
-		Body.getInstance().setPrefNames(
-				Name.getInstance().getNameCombinations());
-	}
-
-	public void setNameFromTextField() {
-
-		firstNameText.setText((Name.getInstance().getFirstName()));
-		middleNameText.setText((Name.getInstance().getMiddleName()));
-		lastNameText.setText((Name.getInstance().getLastName()));
+		Body.getInstance().setAddress(
+				Address.getInstance(addressType).getAddressDetail());
 	}
 }
