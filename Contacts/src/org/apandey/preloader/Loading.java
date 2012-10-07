@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apandey.preloader.paths.PathLoader;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -34,6 +32,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import org.apandey.preloader.paths.PathLoader;
 
 /**
  * 
@@ -164,7 +164,7 @@ public class Loading extends Application implements ChangeListener<Number> {
 	 */
 	public void makeParticle() {
 
-		particle1 = new Circle(0, 0, 2, Color.YELLOW);
+		particle1 = new Circle(0, 0, 4, Color.YELLOW);
 		particle2 = new Circle(0, 0, 2, Color.RED);
 		particle3 = new Circle(0, 0, 2, Color.ORANGE);
 		particle4 = new Circle(0, 0, 2, Color.WHEAT);
@@ -273,8 +273,8 @@ public class Loading extends Application implements ChangeListener<Number> {
 						i += 0.1;
 						update(i);
 					} catch (InterruptedException ex) {
-						Logger.getLogger(Loading.class.getName()).log(Level.SEVERE,
-								null, ex);
+						Logger.getLogger(Loading.class.getName()).log(
+								Level.SEVERE, null, ex);
 					}
 
 				}
